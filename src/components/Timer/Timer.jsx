@@ -2,8 +2,6 @@ import "./Timer.css";
 import { useState, useEffect } from "react";
 
 export default function Timer() {
-   const [timerAtual, setTimerAtual] = useState(1500); // Tempo inicial em segundos (25 minutos)
-   const [timerTela, setTimerTela] = useState(formatarTempo(1500)); // Inicia com o tempo formatado
    const [telaAtual, setTelaAtual] = useState(1)
    const [botao, setBotao] = useState("Iniciar");
    const [intervalo, setIntervalo] = useState(null);
@@ -15,7 +13,9 @@ export default function Timer() {
    const [shortTimer, setShortTimer] = useState(5 * 60);
    const [longTimer, setLongTimer] = useState(15 * 60);
 
-   // document.getElementById("btnPomo").style.backgroundColor = "#FFEB55";
+   //Timer
+   const [timerAtual, setTimerAtual] = useState(pomodoroTimer); // Tempo inicial em segundos (25 minutos)
+   const [timerTela, setTimerTela] = useState(formatarTempo(pomodoroTimer)); // Inicia com o tempo formatado
 
    // Função para formatar o tempo
    function formatarTempo(segundos) {
@@ -75,8 +75,20 @@ export default function Timer() {
 
    function reiniciarTempo() {
       clearInterval(intervalo);
-      setTimerAtual(1500); // Reinicia para 25 minutos
       setBotao("Iniciar");
+      switch (telaAtual) {
+         case 1:
+            setTimerAtual(pomodoroTimer);
+            break;
+         case 2:
+            setTimerAtual(shortTimer);
+            break;
+         case 3:
+            setTimerAtual(longTimer);
+            break;
+         default:
+            break;
+      }
    }
 
    function pularTempo() {
