@@ -14,6 +14,8 @@ export default function Timer() {
    const shortTimer = 5 * 60;
    const longTimer = 15 * 60;
 
+   // document.getElementById("btnPomo").style.backgroundColor = "#FFEB55";
+
    // Função para formatar o tempo
    function formatarTempo(segundos) {
       let minutos = Math.floor(segundos / 60);
@@ -137,6 +139,12 @@ export default function Timer() {
    }, [timerAtual, telaAtual, intervalo, ciclosPomodoro]); // Usa efeito de dependência para checar mudanças
 
    useEffect(() => {
+      // Inicia com a tela Pomodoro e aplica a cor correta ao botão
+      mudarTela(1); // Garante que o Pomodoro seja a tela inicial e o botão já tenha a cor
+      setTimerTela(formatarTempo(timerAtual)); // Atualiza o valor formatado para exibir na tela
+   }, []); // Este useEffect roda apenas uma vez, logo após a primeira renderização
+
+   useEffect(() => {
       setTimerTela(formatarTempo(timerAtual)); // Atualiza o valor formatado para exibir na tela
    }, [timerAtual]); // Observa tanto o valor do timerAtual quanto o intervalo
 
@@ -165,7 +173,7 @@ export default function Timer() {
             </div>
          </div>
 
-         <div id="int-atual">#{ciclosPomodoro}</div>
+         <div id="int-atual">#{ciclosPomodoro + 1}</div>
       </div>
    );
 }
