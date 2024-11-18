@@ -331,7 +331,7 @@ export default function Timer() {
          >
             <div id="configModal" class="modal">
                <div class="modal-content">
-                  <span class="close">&times;</span>
+                  <span class="close" onClick={closeModalConfig}>&times;</span>
                   <h2>Configurações</h2>
                   <label htmlFor="pomoInput">Pomodoro (minutos):</label>
                   <input type="number" id="pomoInput" value={pomodoroTimer / 60} onChange={handleInputChange} />
@@ -348,7 +348,7 @@ export default function Timer() {
                   <button id="saveConfig" onClick={salvarConfiguracoes}>Salvar</button>
                </div>
             </div>
-         </Modal>
-      </div>
+         </Modal >
+      </div >
    );
 }
