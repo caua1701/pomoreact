@@ -1,21 +1,54 @@
 import "./Timer.css";
 import { useState, useEffect } from "react";
+import Modal from "react-modal";
 
 export default function Timer() {
+   // Inicializando o estado com valores do localStorage ou com valores padrão
+   const [pomodoroTimer, setPomodoroTimer] = useState(() => {
+      const savedPomodoroTimer = localStorage.getItem("pomodoroTimer");
+      return savedPomodoroTimer ? JSON.parse(savedPomodoroTimer) : 25 * 60; // Valor padrão: 25 minutos
+   });
+   const [shortTimer, setShortTimer] = useState(() => {
+      const savedShortTimer = localStorage.getItem("shortTimer");
+      return savedShortTimer ? JSON.parse(savedShortTimer) : 5 * 60; // Valor padrão: 5 minutos
+   });
+   const [longTimer, setLongTimer] = useState(() => {
+      const savedLongTimer = localStorage.getItem("longTimer");
+      return savedLongTimer ? JSON.parse(savedLongTimer) : 15 * 60; // Valor padrão: 15 minutos
+   });
+   const [intervalosDesejados, setIntervalosDesejados] = useState(() => {
+      const savedIntervalosDesejados = localStorage.getItem("intervalosDesejados");
+      return savedIntervalosDesejados ? JSON.parse(savedIntervalosDesejados) : 3; // Valor padrão: 3 intervalos
+   });
+
    const [telaAtual, setTelaAtual] = useState(1)
    const [botao, setBotao] = useState("Iniciar");
    const [intervalo, setIntervalo] = useState(null);
    const [ciclosPomodoro, setCiclosPomodoro] = useState(0); // Número de ciclos de Pomodoro completados
-   const [intervalosDesejados, setIntervalosDesejados] = useState(3); // Número de intervalos (ciclos) antes de Long Break
-
-   // Estado para armazenar os tempos configuráveis
-   const [pomodoroTimer, setPomodoroTimer] = useState(25 * 60);
-   const [shortTimer, setShortTimer] = useState(5 * 60);
-   const [longTimer, setLongTimer] = useState(15 * 60);
 
    //Timer
    const [timerAtual, setTimerAtual] = useState(pomodoroTimer); // Tempo inicial em segundos (25 minutos)
    const [timerTela, setTimerTela] = useState(formatarTempo(pomodoroTimer)); // Inicia com o tempo formatado
+
+   //Modal
+   const [modalMusicOpen, setmodalMusicOpen] = useState(false);
+   const [modalConfigOpen, setmodalConfigOpen] = useState(false);
+
+   function openMusicModal() {
+      setmodalMusicOpen(true);
+   }
+
+   function openConfigModal() {
+      setmodalConfigOpen(true);
+   }
+
+   function closeModalMusic() {
+      setmodalMusicOpen(false);
+   }
+
+   function closeModalConfig() {
+      setmodalConfigOpen(false);
+   }
 
    // Função para formatar o tempo
    function formatarTempo(segundos) {
@@ -53,6 +86,21 @@ export default function Timer() {
          interval: intervalosDesejados,
       };
       localStorage.setItem("configPomo", JSON.stringify(configPomo));
+
+      // Atualiza o timerAtual com base na tela atual
+      switch (telaAtual) {
+         case 1: // Pomodoro
+            setTimerAtual(pomodoroTimer);
+            break;
+         case 2: // Short Break
+            setTimerAtual(shortTimer);
+            break;
+         case 3: // Long Break
+            setTimerAtual(longTimer);
+            break;
+         default:
+            break;
+      }
    }
 
    // Inicia/pausa o cronômetro
@@ -153,6 +201,34 @@ export default function Timer() {
       botaoAtivo.classList.add("active"); // Adiciona a classe 'active' para indicar o botão selecionado
    }
 
+   function handleInputChange(event) {
+      const { id, value } = event.target;
+
+      switch (id) {
+         case "pomoInput":
+            setPomodoroTimer(Number(value) * 60); // Conversão para segundos
+            break;
+         case "shortInput":
+            setShortTimer(Number(value) * 60);
+            break;
+         case "longInput":
+            setLongTimer(Number(value) * 60);
+            break;
+         case "interval":
+            setIntervalosDesejados(Number(value));
+            break;
+         default:
+            break;
+      }
+   }
+
+   useEffect(() => {
+      localStorage.setItem("pomodoroTimer", JSON.stringify(pomodoroTimer));
+      localStorage.setItem("shortTimer", JSON.stringify(shortTimer));
+      localStorage.setItem("longTimer", JSON.stringify(longTimer));
+      localStorage.setItem("intervalosDesejados", JSON.stringify(intervalosDesejados));
+   }, [pomodoroTimer, shortTimer, longTimer, intervalosDesejados]); // Salva quando algum desses valores mudar
+
    // Função para mudar a tela automaticamente conforme a sequência Pomodoro - Short Break - Long Break
    useEffect(() => {
       carregarConfiguracoes(); // Carrega as configurações ao montar o componente
@@ -206,8 +282,8 @@ export default function Timer() {
          </div>
 
          <div className="modal-options">
-            <i className="fa-solid fa-music" id="musicButton"></i>
-            <i className="fa-solid fa-gear" id="configButton"></i>
+            <i className="fa-solid fa-music" id="musicButton" onClick={openMusicModal}></i>
+            <i className="fa-solid fa-gear" id="configButton" onClick={openConfigModal}></i>
          </div>
 
          <div className="cronometro">
@@ -223,6 +299,56 @@ export default function Timer() {
          </div>
 
          <div id="int-atual">#{ciclosPomodoro + 1}</div>
+
+         {/* Modal de Música */}
+         <Modal
+            isOpen={modalMusicOpen}
+            onRequestClose={closeModalMusic}
+            contentLabel="Música"
+            overlayClassName="modal-overlay"
+            className="modal-content"
+            appElement={document.getElementById('root')}
+         >
+            <div className="modal-music">
+               <span className="close-music" onClick={closeModalMusic}>&times;</span>
+               <iframe
+                  width="100%"
+                  height="300"
+                  scrolling="no"
+                  frameBorder="no"
+                  src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/1234281943&color=%23ff5500&auto_play=true&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true"
+               ></iframe>
+            </div>
+         </Modal>
+
+         <Modal
+            isOpen={modalConfigOpen}
+            onRequestClose={closeModalConfig}
+            contentLabel="Música"
+            overlayClassName="modal-overlay"
+            className="modal-content"
+            appElement={document.getElementById('root')}
+         >
+            <div id="configModal" class="modal">
+               <div class="modal-content">
+                  <span class="close">&times;</span>
+                  <h2>Configurações</h2>
+                  <label htmlFor="pomoInput">Pomodoro (minutos):</label>
+                  <input type="number" id="pomoInput" value={pomodoroTimer / 60} onChange={handleInputChange} />
+                  <br />
+                  <label htmlFor="shortInput">Pausa Curta (minutos):</label>
+                  <input type="number" id="shortInput" value={shortTimer / 60} onChange={handleInputChange} />
+                  <br />
+                  <label htmlFor="longInput">Pausa Longa (minutos):</label>
+                  <input type="number" id="longInput" value={longTimer / 60} onChange={handleInputChange} />
+                  <br />
+                  <label htmlFor="interval">Intervalos:</label>
+                  <input type="number" id="interval" value={intervalosDesejados} onChange={handleInputChange} />
+                  <br /><br />
+                  <button id="saveConfig" onClick={salvarConfiguracoes}>Salvar</button>
+               </div>
+            </div>
+         </Modal>
       </div>
    );
 }
