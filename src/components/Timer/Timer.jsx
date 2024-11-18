@@ -34,16 +34,8 @@ export default function Timer() {
    const [modalMusicOpen, setmodalMusicOpen] = useState(false);
    const [modalConfigOpen, setmodalConfigOpen] = useState(false);
 
-   function openMusicModal() {
-      setmodalMusicOpen(true);
-   }
-
    function openConfigModal() {
       setmodalConfigOpen(true);
-   }
-
-   function closeModalMusic() {
-      setmodalMusicOpen(false);
    }
 
    function closeModalConfig() {
@@ -289,7 +281,6 @@ export default function Timer() {
          </div>
 
          <div className="modal-options">
-            <i className="fa-solid fa-music" id="musicButton" onClick={openMusicModal}></i>
             <i className="fa-solid fa-gear" id="configButton" onClick={openConfigModal}></i>
          </div>
 
@@ -306,27 +297,6 @@ export default function Timer() {
          </div>
 
          <div id="int-atual">#{ciclosPomodoro + 1}</div>
-
-         {/* Modal de Música */}
-         <Modal
-            isOpen={modalMusicOpen}
-            onRequestClose={closeModalMusic}
-            contentLabel="Música"
-            overlayClassName="modal-overlay"
-            className="modal-content"
-            appElement={document.getElementById('root')}
-         >
-            <div className="modal-music">
-               <span className="close-music" onClick={closeModalMusic}>&times;</span>
-               <iframe
-                  width="100%"
-                  height="300"
-                  scrolling="no"
-                  frameBorder="no"
-                  src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/1234281943&color=%23ff5500&auto_play=true&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true"
-               ></iframe>
-            </div>
-         </Modal>
 
          <Modal
             isOpen={modalConfigOpen}
