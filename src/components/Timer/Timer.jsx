@@ -139,6 +139,12 @@ export default function Timer() {
       }
    }
 
+   // Função para tocar o alarme
+   const tocarAlarme = () => {
+      const audio = new Audio("/alarm.mp3"); // Caminho do arquivo de áudio
+      audio.play(); // Toca o áudio
+   };
+
    function pularTempo() {
       setTimerAtual(1); // Define um segundo para pular
    }
@@ -260,6 +266,7 @@ export default function Timer() {
          }
          setBotao("Iniciar"); // Reseta o botão para "Iniciar"
          clearInterval(intervalo); // Limpa o intervalo ao mudar a tela
+         tocarAlarme(); // Toca o alarme quando o timer terminar
       }
    }, [timerAtual, telaAtual, intervalo, ciclosPomodoro]); // Usa efeito de dependência para checar mudanças
 
