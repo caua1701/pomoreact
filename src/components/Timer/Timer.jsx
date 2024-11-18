@@ -23,58 +23,62 @@ export default function Timer() {
       } else {
          setBotao("Iniciar");
          clearInterval(intervalo);
+         setIntervalo(null); // Limpa o intervalo
       }
    }
 
    // Função que decrementa o tempo
    function passarTempo() {
-      setTimerAtual((prev) => {
-         if (prev > 0) {
-            return prev - 1; // Decrementa o tempo
-         } else {
-            clearInterval(intervalo); // Para o intervalo quando o tempo chega a zero
-            setBotao("Iniciar"); // Reseta o botão para "Iniciar"
-            return 1500; // Reinicia o tempo para 25 minutos (ou o tempo original configurado)
-         }
-      });
+      setTimerAtual((prev) => prev - 1); // Decrementa o tempo de 1 segundo
    }
 
    function reiniciarTempo() {
       clearInterval(intervalo);
-      setTimerAtual(1500)
-      setBotao("Iniciar")
+      setTimerAtual(1500); // Reinicia para 25 minutos
+      setBotao("Iniciar");
+   }
+
+   function pularTempo() {
+      setTimerAtual(1); // Define um segundo para pular
    }
 
    useEffect(() => {
       setTimerTela(formatarTempo(timerAtual)); // Atualiza o valor formatado para exibir na tela
-   }, [timerAtual]); // A cada vez que o timerAtual muda, formate o tempo novamente
+
+      // Se o tempo chegar a zero, para o cronômetro
+      if (timerAtual === 0) {
+         setTimerAtual(1500);
+         clearInterval(intervalo); // Limpa o intervalo
+         setBotao("Iniciar"); // Reseta o botão para "Iniciar"
+      }
+   }, [timerAtual, intervalo]); // Observa tanto o valor do timerAtual quanto o intervalo
 
    return (
-      <div class="container">
-         <div class="options">
-            <button id="btnPomo" onclick="mudarTela(1)">Pomodoro</button>
-            <button id="btnShort" onclick="mudarTela(2)">Short Break</button>
-            <button id="btnLong" onclick="mudarTela(3)">Long Break</button>
+      <div className="container">
+         <div className="options">
+            <button id="btnPomo" onClick={() => mudarTela(1)}>Pomodoro</button>
+            <button id="btnShort" onClick={() => mudarTela(2)}>Short Break</button>
+            <button id="btnLong" onClick={() => mudarTela(3)}>Long Break</button>
          </div>
 
          <div className="modal-options">
-            <i class="fa-solid fa-music" id="musicButton"></i>
-            <i class="fa-solid fa-gear" id="configButton"></i>
+            <i className="fa-solid fa-music" id="musicButton"></i>
+            <i className="fa-solid fa-gear" id="configButton"></i>
          </div>
 
-         <div class="cronometro">
-            <div class="tempo" id="timer">{timerTela}</div>
+         <div className="cronometro">
+            <div className="tempo" id="timer">{timerTela}</div>
 
-            <div class="actions">
-               <i class="fa-solid fa-rotate-right" onClick={reiniciarTempo}></i>
+            <div className="actions">
+               <i className="fa-solid fa-rotate-right" onClick={reiniciarTempo}></i>
 
                <button id="botaoTimer" onClick={contador}>{botao}</button>
 
-               <i class="fa-solid fa-forward" onclick="pular()"></i>
+               <i className="fa-solid fa-forward" onClick={pularTempo}></i>
             </div>
          </div>
 
          <div id="int-atual">#1</div>
       </div>
-   )
+   );
 }
