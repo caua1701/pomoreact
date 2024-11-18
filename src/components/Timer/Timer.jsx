@@ -39,6 +39,12 @@ export default function Timer() {
       });
    }
 
+   function reiniciarTempo() {
+      clearInterval(intervalo);
+      setTimerAtual(1500)
+      setBotao("Iniciar")
+   }
+
    useEffect(() => {
       setTimerTela(formatarTempo(timerAtual)); // Atualiza o valor formatado para exibir na tela
    }, [timerAtual]); // A cada vez que o timerAtual muda, formate o tempo novamente
@@ -60,7 +66,7 @@ export default function Timer() {
             <div class="tempo" id="timer">{timerTela}</div>
 
             <div class="actions">
-               <i class="fa-solid fa-rotate-right" onclick="reiniciarTimer()"></i>
+               <i class="fa-solid fa-rotate-right" onClick={reiniciarTempo}></i>
 
                <button id="botaoTimer" onClick={contador}>{botao}</button>
 
