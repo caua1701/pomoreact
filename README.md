@@ -1,8 +1,8 @@
-# React + Vite
-
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
-
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+<h1> Pomoreact </h1>
+<p> Pomodash é um pomodoro simples tendo uma função a mais de checklist. </p>
+<p> Trabalho de Linguagem de Programação WEB - ADS 2° Semestre </p>
+<h2> Integrantes: </h2>
+<h3>Caio Nonato</h3>
+<h3>Cauã Lopes</h3>
+<h3>Josué Bandeira</h3>
+<h3>Vitor Escorcio</h3>
