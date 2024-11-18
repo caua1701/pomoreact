@@ -49,9 +49,45 @@
    border-radius: 0px 10px 10px 0px;
 }
 
-/* .input-container{
+.tarefa {
    display: flex;
-   margin-top: 15px;
-   width: 100%;
+   justify-content: space-between; /* Espaça os itens */
+   align-items: center; /* Alinha os itens verticalmente */
+   padding: 10px;
+   border-bottom: 1px solid #ccc;
+   font-size: 22px;
+   font-weight: bold;
+ }
+ 
+ .tarefa span {
+   flex-grow: 1; /* Faz com que o texto da tarefa ocupe o espaço disponível */
+   cursor: pointer; /* Cursor para indicar que é clicável */
+   text-align: left;
+   
+ }
+ 
+ .tarefa .delete-button {
+   border: none;
+   padding: 5px 10px;
+   cursor: pointer;
+   font-size: 20px;
+ }
 
-} */
+ .delete-button{
+   background-color: white;
+   color: black;
+   border-radius: 5px;
+ }
+ 
+ .tarefa .delete-button:hover {
+   background-color: #e04a4a;
+ }
+ 
+ #tarefa-input {
+   width: 80%; /* Ajusta a largura */
+   padding: 8px;
+ }
+
+ 
+
+
