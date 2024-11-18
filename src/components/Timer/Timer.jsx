@@ -10,9 +10,10 @@ export default function Timer() {
    const [ciclosPomodoro, setCiclosPomodoro] = useState(0); // Número de ciclos de Pomodoro completados
    const [intervalosDesejados, setIntervalosDesejados] = useState(3); // Número de intervalos (ciclos) antes de Long Break
 
-   const pomodoroTimer = 25 * 60;
-   const shortTimer = 5 * 60;
-   const longTimer = 15 * 60;
+   // Estado para armazenar os tempos configuráveis
+   const [pomodoroTimer, setPomodoroTimer] = useState(25 * 60);
+   const [shortTimer, setShortTimer] = useState(5 * 60);
+   const [longTimer, setLongTimer] = useState(15 * 60);
 
    // document.getElementById("btnPomo").style.backgroundColor = "#FFEB55";
 
@@ -21,6 +22,37 @@ export default function Timer() {
       let minutos = Math.floor(segundos / 60);
       let secs = segundos % 60;
       return (minutos < 10 ? "0" + minutos : minutos) + ":" + (secs < 10 ? "0" + secs : secs);
+   }
+
+   // Função para carregar as configurações do localStorage
+   function carregarConfiguracoes() {
+      const localConfig = JSON.parse(localStorage.getItem("configPomo"));
+      if (localConfig) {
+         setPomodoroTimer(localConfig.pomoTimer);
+         setShortTimer(localConfig.shortTimer);
+         setLongTimer(localConfig.longTimer);
+         setIntervalosDesejados(localConfig.interval);
+      } else {
+         // Se não existir configuração salva, cria uma com os valores padrão
+         const configPomo = {
+            pomoTimer: pomodoroTimer,
+            shortTimer: shortTimer,
+            longTimer: longTimer,
+            interval: intervalosDesejados,
+         };
+         localStorage.setItem("configPomo", JSON.stringify(configPomo));
+      }
+   }
+
+   // Salvar as configurações no localStorage sempre que elas mudarem
+   function salvarConfiguracoes() {
+      const configPomo = {
+         pomoTimer: pomodoroTimer,
+         shortTimer: shortTimer,
+         longTimer: longTimer,
+         interval: intervalosDesejados,
+      };
+      localStorage.setItem("configPomo", JSON.stringify(configPomo));
    }
 
    // Inicia/pausa o cronômetro
@@ -108,6 +140,11 @@ export default function Timer() {
       botaoAtivo.style.color = "black";
       botaoAtivo.classList.add("active"); // Adiciona a classe 'active' para indicar o botão selecionado
    }
+
+   // Função para mudar a tela automaticamente conforme a sequência Pomodoro - Short Break - Long Break
+   useEffect(() => {
+      carregarConfiguracoes(); // Carrega as configurações ao montar o componente
+   }, []); // Este useEffect roda apenas uma vez ao montar o componente
 
    // Função para mudar a tela automaticamente conforme a sequência Pomodoro - Short Break - Long Break
    useEffect(() => {
