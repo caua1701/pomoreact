@@ -1,0 +1,57 @@
+.Tasks {
+   display: flex;
+   flex-direction: column;
+   margin-top: 20px;
+   padding: 15px 0;
+   color: #260d0d;
+   text-align: center;
+   width: 60%;
+   max-width: 700px;
+   border-radius: 10px;
+   background-color: #ff4000;
+}
+
+#task-title{
+   font-size: 25px;
+   margin: 15px 0px;
+}
+
+.task-inputs{
+   width: 100%;
+   
+   & input,button{
+      font-size: 20px;
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+      text-align: center;
+   }
+
+   & input{
+      width: 75%;
+   }
+
+   & button{
+      background-color: #260d0d;
+      width: 15%;
+   }
+
+   & button:hover{
+      background-color: #bfc9c0be;
+   }
+}
+
+#tarefa-input{
+   border-radius: 10px 0px 0px 10px;
+}
+
+#tarefa-button{
+   border-radius: 0px 10px 10px 0px;
+}
+
+/* .input-container{
+   display: flex;
+   margin-top: 15px;
+   width: 100%;
+
+} */
